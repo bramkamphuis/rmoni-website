@@ -3,9 +3,13 @@
  *
  * Every route uses this instead of duplicating fetch logic.
  * It automatically adds the Bearer token and base URL from your .env file.
+ *
+ * The Rmoni API uses flat endpoint names like /GetNetworks, /GetSensorsForDevice
+ * (not REST-style paths like /api/networks).
+ * Query parameters can be passed as an object: apiClient("/GetNetworks", { unitId: 1 })
  */
 
-async function apiClient(path) {
+async function apiClient(path, params = {}) {
   const baseUrl = process.env.RMONI_API_BASE_URL;
   const token = process.env.RMONI_API_TOKEN;
 
@@ -16,9 +20,15 @@ async function apiClient(path) {
     );
   }
 
-  const url = `${baseUrl}${path}`;
+  // Build the full URL with query parameters
+  const url = new URL(path, baseUrl);
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null) {
+      url.searchParams.set(key, value);
+    }
+  }
 
-  const response = await fetch(url, {
+  const response = await fetch(url.toString(), {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",

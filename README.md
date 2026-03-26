@@ -13,9 +13,9 @@ backend/
   package.json       — Lists the project name and dependencies (express, dotenv).
   routes/
     health.js        — GET /health         → Returns { "status": "ok" } (server check)
-    networks.js      — GET /api/networks   → Fetches networks from the Rmoni API
-    sensors.js       — GET /api/sensors    → Fetches sensors from the Rmoni API
-    alarms.js        — GET /api/alarms     → Fetches alarms from the Rmoni API
+    networks.js      — GET /api/networks   → Calls /GetNetworks on the Rmoni API
+    sensors.js       — GET /api/sensors    → Calls /GetSensorsForDevice on the Rmoni API
+    alarms.js        — GET /api/alarms     → Calls /GetAlarms on the Rmoni API
 ```
 
 ## Getting started
@@ -72,9 +72,12 @@ Open your browser or use `curl`:
 ```bash
 curl http://localhost:3000/health
 curl http://localhost:3000/api/networks
-curl http://localhost:3000/api/sensors
+curl "http://localhost:3000/api/sensors?unitId=123&mac=AA:BB:CC:DD"
 curl http://localhost:3000/api/alarms
 ```
+
+> **Note:** The `/api/sensors` endpoint requires `unitId` and `mac` query parameters
+> because the Rmoni API fetches sensors per device (`/GetSensorsForDevice`).
 
 ## How it works
 
@@ -83,6 +86,15 @@ curl http://localhost:3000/api/alarms
 3. When you hit an endpoint (e.g. `/api/networks`), the route calls `apiClient.js`.
 4. `apiClient.js` makes a `fetch` request to the Rmoni API with your Bearer token.
 5. The response is returned to you as JSON.
+
+### Endpoint mapping
+
+| Your server           | Rmoni API endpoint         |
+|-----------------------|----------------------------|
+| `GET /health`         | _(local check, no API call)_ |
+| `GET /api/networks`   | `GET /GetNetworks`         |
+| `GET /api/sensors`    | `GET /GetSensorsForDevice` |
+| `GET /api/alarms`     | `GET /GetAlarms`           |
 
 ## Development mode
 
