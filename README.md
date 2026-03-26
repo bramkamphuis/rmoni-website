@@ -13,9 +13,9 @@ backend/
   package.json       — Lists the project name and dependencies (express, dotenv).
   routes/
     health.js        — GET /health         → Returns { "status": "ok" } (server check)
-    networks.js      — GET /api/networks   → Calls /GetNetworks on the Rmoni API
-    sensors.js       — GET /api/sensors    → Calls /GetSensorsForDevice on the Rmoni API
-    alarms.js        — GET /api/alarms     → Calls /GetAlarms on the Rmoni API
+    networks.js      — GET /api/networks   → Calls /GetNetworksForLoginAccount
+    sensors.js       — GET /api/sensors    → Calls /GetSensorsForDevice
+    alarms.js        — GET /api/alarms     → Calls /GetAlarmEventsForNetWork
 ```
 
 ## Getting started
@@ -73,11 +73,12 @@ Open your browser or use `curl`:
 curl http://localhost:3000/health
 curl http://localhost:3000/api/networks
 curl "http://localhost:3000/api/sensors?unitId=123&mac=AA:BB:CC:DD"
-curl http://localhost:3000/api/alarms
+curl "http://localhost:3000/api/alarms?networkId=123"
 ```
 
 > **Note:** The `/api/sensors` endpoint requires `unitId` and `mac` query parameters
 > because the Rmoni API fetches sensors per device (`/GetSensorsForDevice`).
+> The `/api/alarms` endpoint requires a `networkId` parameter (get this from `/api/networks` first).
 
 ## How it works
 
@@ -91,10 +92,10 @@ curl http://localhost:3000/api/alarms
 
 | Your server           | Rmoni API endpoint         |
 |-----------------------|----------------------------|
-| `GET /health`         | _(local check, no API call)_ |
-| `GET /api/networks`   | `GET /GetNetworks`         |
-| `GET /api/sensors`    | `GET /GetSensorsForDevice` |
-| `GET /api/alarms`     | `GET /GetAlarms`           |
+| `GET /health`         | _(local check, no API call)_    |
+| `GET /api/networks`   | `GET /GetNetworksForLoginAccount` |
+| `GET /api/sensors`    | `GET /GetSensorsForDevice`      |
+| `GET /api/alarms`     | `GET /GetAlarmEventsForNetWork`  |
 
 ## Development mode
 

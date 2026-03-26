@@ -2,7 +2,7 @@ const express = require("express");
 const apiClient = require("../apiClient");
 const router = express.Router();
 
-// GET /api/sensors — Fetch sensors for a specific device from the Rmoni API
+// GET /api/sensors — Returns all sensors for a device
 // Calls: /GetSensorsForDevice on the Rmoni API
 //
 // Query parameters (pass through from your request):
