@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "analyze": "node scripts/analyzeAlarms.js",
+    "analyze:json": "node scripts/analyzeAlarms.js --json"
   },
   "dependencies": {
     "dotenv": "^16.4.7",

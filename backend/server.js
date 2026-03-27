@@ -9,6 +9,7 @@ app.use("/health", require("./routes/health"));
 app.use("/api/networks", require("./routes/networks"));
 app.use("/api/sensors", require("./routes/sensors"));
 app.use("/api/alarms", require("./routes/alarms"));
+app.use("/api/analysis", require("./routes/analysis"));
 
 // --- Start the server ---
 const PORT = process.env.PORT || 3000;

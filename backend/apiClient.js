@@ -5,7 +5,7 @@
  * It automatically adds the Bearer token and base URL from your .env file.
  */
 
-async function apiClient(path) {
+async function apiClient(path, params = {}) {
   const baseUrl = process.env.RMONI_API_BASE_URL;
   const token = process.env.RMONI_API_TOKEN;
 
@@ -16,7 +16,10 @@ async function apiClient(path) {
     );
   }
 
-  const url = `${baseUrl}${path}`;
+  const query = Object.keys(params).length
+    ? "?" + new URLSearchParams(params).toString()
+    : "";
+  const url = `${baseUrl}${path}${query}`;
 
   const response = await fetch(url, {
     headers: {
